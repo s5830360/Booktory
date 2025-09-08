@@ -21,5 +21,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("SELECT AVG(r.rating) FROM Review r WHERE r.user.username = :username")
     Double getAverageRatingByUsername(@Param("username") String username);
 
+    @Query("SELECT r FROM Review r JOIN FETCH r.user")
+    List<Review> findAllWithUser();
 }
 

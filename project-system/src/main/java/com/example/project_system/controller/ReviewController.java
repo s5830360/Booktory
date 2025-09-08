@@ -65,13 +65,6 @@ public class ReviewController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ReviewDto> getReviewById(@PathVariable Long id) {
-        return reviewService.getReviewById(id)
-                .map(review -> ResponseEntity.ok(ReviewDto.fromEntity(review)))
-                .orElse(ResponseEntity.notFound().build());
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<?> updateReview(@PathVariable Long id, @RequestBody ReviewDto dto) {
         return reviewService.updateReview(id, dto)
@@ -119,5 +112,28 @@ public class ReviewController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/all")
+    public List<ReviewDto> getAllReviews() {
+        List<Review> reviews = reviewRepository.findAllWithUser();
+        return reviews.stream()
+                .map(ReviewDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ReviewDto> getReviewById(@PathVariable Long id) {
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+        if (optionalReview.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Review review = optionalReview.get();
+
+        // ✅ 조회수 증가
+        review.setViewCount(review.getViewCount() + 1);
+        reviewRepository.save(review);
+
+        return ResponseEntity.ok(ReviewDto.fromEntity(review));
+    }
 
 }

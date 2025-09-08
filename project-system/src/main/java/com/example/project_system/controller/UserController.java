@@ -28,6 +28,7 @@ public class UserController {
 
                     Map<String, Object> result = new HashMap<>();
                     result.put("username", user.getUsername());
+                    result.put("nickname", user.getNickname());
                     result.put("joinedDate", user.getCreatedAt());
                     result.put("reviewCount", reviewCount);
                     result.put("averageRating", avgRating != null ? avgRating : 0.0);

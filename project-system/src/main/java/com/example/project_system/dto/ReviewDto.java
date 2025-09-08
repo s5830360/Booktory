@@ -22,6 +22,7 @@ public class ReviewDto {
     private int rating;
     private String content;
     private LocalDateTime createdAt;
+    private Long viewCount;
 
     // 엔티티 → DTO 변환용 메서드
     public static ReviewDto fromEntity(Review review) {
@@ -34,6 +35,7 @@ public class ReviewDto {
                 .rating(review.getRating())
                 .content(review.getContent())
                 .createdAt(review.getCreatedAt())
+                .viewCount(review.getViewCount())
                 .build();
     }
 

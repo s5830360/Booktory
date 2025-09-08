@@ -37,4 +37,8 @@ public class Review {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
+
+    @Column(nullable = false)
+    private Long viewCount = 0L;
+
 }
